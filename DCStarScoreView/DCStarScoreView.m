@@ -8,7 +8,7 @@
 
 #import "DCStarScoreView.h"
 
-#define kStarPadding 2
+#define kStarPadding 1
 
 @interface DCStarScoreView ()
 
@@ -35,7 +35,9 @@
     
     // Init some empty star with total score
     //
-    _starViews = [[NSMutableArray alloc]init];
+    if (! self.starViews) {
+        _starViews = [[NSMutableArray alloc]init];
+    }
     
     CGFloat currentCenter = 0;
     
@@ -88,12 +90,20 @@
     
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    
+    if (self.enableTappedRate) {
+        
+        UITouch *touch = [touches anyObject];
+        CGPoint currentTouchPoint = [touch locationInView:self];
+        
+        UIImageView *imageView = self.starViews[0];
+        
+        CGFloat currentScore = currentTouchPoint.x/imageView.frame.size.width;
+        
+        [self setScore:(NSInteger)currentScore + 1];
+
+    }
 }
-*/
 
 @end
