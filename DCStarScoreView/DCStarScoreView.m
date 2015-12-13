@@ -88,6 +88,8 @@
         
     }
     
+    _score = score;
+    
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
@@ -100,10 +102,19 @@
         UIImageView *imageView = self.starViews[0];
         
         CGFloat currentScore = currentTouchPoint.x/imageView.frame.size.width;
+        currentScore = ceil(currentScore);
         
-        [self setScore:(NSInteger)currentScore + 1];
+        [self setScore:(NSInteger)currentScore];
 
     }
+    
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(dcStarScoreViewDidTapped:)]) {
+        
+        [_delegate dcStarScoreViewDidTapped:self];
+        
+    }
+    
 }
 
 @end
